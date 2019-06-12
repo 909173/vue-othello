@@ -10,8 +10,8 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import SquareVue from "../components/Square.vue";
 import { board } from "@/store/module";
+import SquareVue from "./Square.vue";
 @Component({
   name: "Board",
   components: {
@@ -19,12 +19,6 @@ import { board } from "@/store/module";
   }
 })
 export default class extends Vue {
-  get fill() {
-    return (row: number, col: number) => {
-      const even = (row + col) % 2 == 0;
-      return `background-color: ${even ? "black" : "white"}`;
-    };
-  }
   mounted() {
     board.InitBoard();
   }
