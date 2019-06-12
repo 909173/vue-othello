@@ -19,8 +19,8 @@ import SquareVue from "./Square.vue";
   }
 })
 export default class extends Vue {
-  mounted() {
-    board.InitBoard();
-  }
+  // mounted() {
+  //   board.InitBoard();
+  // }
 }
 </script>

@@ -11,27 +11,35 @@ import { OthelloColor } from "@/Model/othelloModel";
 
 @Module({ namespaced: true, dynamic: true, store, name: "board" })
 export class Board extends VuexModule {
-  boardFill: number[][] = [];
+  boardFill: number[][] = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
+    [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0]
+  ];
   whoseTurn: OthelloColor = "black";
   @Action({ rawError: true })
   InitBoard() {
-    const board: number[][] = new Array();
-    for (let i = 0; i < 8; i++) {
-      board[i] = new Array();
-      for (let j = 0; j < 9; j++) {
-        board[i][j] = 0;
-      }
-    }
-    board[3][3] = 1;
-    board[4][4] = 1;
-    board[3][4] = 2;
-    board[4][3] = 2;
+    const board: number[][] = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, 2, 0, 0, 0, 0],
+      [0, 0, 0, 2, 1, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ];
     this.SET_BOARD_FILL(board);
     this.SET_INIT_TURN();
   }
   @Mutation
   SET_BOARD_FILL(arr: number[][]) {
-    this.boardFill = arr;
+    this.boardFill = [...arr];
   }
   @Mutation
   SET_NEXT_TURN() {

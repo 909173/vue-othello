@@ -3,12 +3,14 @@
     class="square"
     :style="`background-color: ${backgroundColor}`"
     @click="putStone"
-  ></div>
+  >
+    {{ canPutStone }}
+  </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { OthelloSquare, fillSquare } from "@/Model/othelloModel";
+import { OthelloSquare, fillSquare, canPutStone } from "@/Model/othelloModel";
 import { Prop } from "vue-property-decorator";
 import { board } from "../store/module";
 @Component({
@@ -26,13 +28,17 @@ export default class extends Vue {
    * 奇数→白
    */
   get SquareFill(): OthelloSquare {
-    if (this.boardFill.length === 0) return "empty";
+    // if (this.boardFill.length === 0) return "empty";
     const panelFill = this.boardFill[this.row][this.col];
     return fillSquare(panelFill);
   }
   get backgroundColor() {
     if (this.SquareFill === "empty") return "green";
     return this.SquareFill;
+  }
+  get canPutStone(): boolean {
+    // if (this.boardFill.length === 0) return false;
+    return canPutStone(this.boardFill, this.row, this.col, board.whoseTurn);
   }
   // 石を置く
   putStone() {
