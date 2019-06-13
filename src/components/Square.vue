@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="square"
-    :style="`background-color: ${backgroundColor}`"
-    @click="putStone"
-  >
-    {{ canPutStone }}
-  </div>
+  <div class="square" :class="squareClass" @click="putStone" />
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -40,8 +34,16 @@ export default class extends Vue {
     // if (this.boardFill.length === 0) return false;
     return canPutStone(this.boardFill, this.row, this.col, board.whoseTurn);
   }
+  get squareClass(): string {
+    const classes: any = {
+      "can-put": this.canPutStone
+    };
+    classes[`square-${this.SquareFill}`] = true;
+    return classes;
+  }
   // 石を置く
   putStone() {
+    if (!this.canPutStone) return;
     const boardFill = [...this.boardFill];
     boardFill[this.row][this.col] = board.whoseTurn === "black" ? 2 : 1;
     board.SET_BOARD_FILL(boardFill);
@@ -53,5 +55,19 @@ export default class extends Vue {
 .square {
   width: 50px;
   height: 50px;
+  border: solid 2px;
+}
+.square-black {
+  background-color: black;
+}
+.square-white {
+  background-color: white;
+}
+.square-empty {
+  background-color: green;
+}
+.can-put {
+  border: solid 2px red;
+  cursor: pointer;
 }
 </style>

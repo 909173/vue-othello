@@ -16,100 +16,82 @@ export const canPutStone = (
   col: number,
   whoseTurn: OthelloColor
 ): boolean => {
-  console.log(board, line, col, whoseTurn);
   if (!isEmpty(board[line][col])) return false;
   const edgeJudge = whoseTurn === "black" ? isWhite : isBlack;
   const nodeJudge = whoseTurn === "black" ? isBlack : isWhite;
   if (isOnBoard(line - 2, col)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line - i, col) && !isEmpty(board[line - i][col])
-    ) {
-      console.log(line - i, col);
+    let i = 1;
+    while (isOnBoard(line - i, col) && !isEmpty(board[line - i][col])) {
       if (edgeJudge(board[line - i][col])) counter++;
       if (nodeJudge(board[line - i][col]) && counter > 0) return true;
+      i++;
     }
   }
   if (isOnBoard(line + 2, col)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line + i, col) && !isEmpty(board[line + i][col])
-    ) {
+    let i = 1;
+    while (isOnBoard(line + i, col) && !isEmpty(board[line + i][col])) {
       if (edgeJudge(board[line + i][col])) counter++;
       if (nodeJudge(board[line + i][col]) && counter > 0) return true;
+      i++;
     }
   }
   if (isOnBoard(line, col - 2)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line, col - i) && !isEmpty(board[line][col - i])
-    ) {
+    let i = 1;
+    while (isOnBoard(line, col - i) && !isEmpty(board[line][col - i])) {
       if (edgeJudge(board[line][col - i])) counter++;
       if (nodeJudge(board[line][col - i]) && counter > 0) return true;
+      i++;
     }
   }
   if (isOnBoard(line, col + 2)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line, col + i) && !isEmpty(board[line][col + i])
-    ) {
+    let i = 1;
+    while (isOnBoard(line, col + i) && !isEmpty(board[line][col + i])) {
       if (edgeJudge(board[line][col + i])) counter++;
       if (nodeJudge(board[line][col + i]) && counter > 0) return true;
+      i++;
     }
   }
   if (isOnBoard(line - 2, col - 2)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line - i, col - i) && !isEmpty(board[line - i][col - i])
-    ) {
+    let i = 1;
+    while (isOnBoard(line - i, col - i) && !isEmpty(board[line - i][col - i])) {
       if (edgeJudge(board[line - i][col - i])) counter++;
       if (nodeJudge(board[line - i][col - i]) && counter > 0) return true;
+      i++;
     }
   }
 
   if (isOnBoard(line + 2, col - 2)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line + i, col - i) && !isEmpty(board[line + i][col - i])
-    ) {
+    let i = 1;
+    while (isOnBoard(line + i, col - i) && !isEmpty(board[line + i][col - i])) {
       if (edgeJudge(board[line + i][col - i])) counter++;
       if (nodeJudge(board[line + i][col - i]) && counter > 0) return true;
+      i++;
     }
   }
 
   if (isOnBoard(line - 2, col + 2)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line - i, col + i) && !isEmpty(board[line - i][col + i])
-    ) {
+    let i = 1;
+    while (isOnBoard(line - i, col + i) && !isEmpty(board[line - i][col + i])) {
       if (edgeJudge(board[line - i][col + i])) counter++;
       if (nodeJudge(board[line - i][col + i]) && counter > 0) return true;
+      i++;
     }
   }
 
   if (isOnBoard(line + 2, col + 2)) {
     let counter = 0;
-    for (
-      let i = 1;
-      i++;
-      isOnBoard(line + i, col + i) && !isEmpty(board[line + i][col + i])
-    ) {
+    let i = 1;
+    while (isOnBoard(line + i, col + i) && !isEmpty(board[line + i][col + i])) {
       if (edgeJudge(board[line + i][col + i])) counter++;
       if (nodeJudge(board[line + i][col + i]) && counter > 0) return true;
+      i++;
     }
   }
   return false;
