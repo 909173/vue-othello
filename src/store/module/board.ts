@@ -7,7 +7,8 @@ import {
 } from "vuex-module-decorators";
 
 import store from "@/store/store";
-import { OthelloColor } from "@/Model/othelloModel";
+import { turn } from "@/store/module";
+import { canPutStone } from "@/Model/othelloModel";
 
 @Module({ namespaced: true, dynamic: true, store, name: "board" })
 export class Board extends VuexModule {
@@ -21,33 +22,33 @@ export class Board extends VuexModule {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0]
   ];
-  whoseTurn: OthelloColor = "black";
   @Action({ rawError: true })
   InitBoard() {
+    // ボードの初期化
     const board: number[][] = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 2, 0, 0, 0, 0],
-      [0, 0, 0, 2, 1, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0]
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, 2, 0, 0, 0],
+      [0, 0, 0, 2, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
     ];
     this.SET_BOARD_FILL(board);
-    this.SET_INIT_TURN();
+    // 手番の初期化
+    turn.SET_INIT_TURN();
+  }
+  get CanPutAnyWhere(): boolean {
+    return this.boardFill.some((col, colIndex) =>
+      col.some((line, lineIndex) =>
+        canPutStone(this.boardFill, lineIndex, colIndex, turn.whoseTurn)
+      )
+    );
   }
   @Mutation
   SET_BOARD_FILL(arr: number[][]) {
     this.boardFill = [...arr];
-  }
-  @Mutation
-  SET_NEXT_TURN() {
-    this.whoseTurn = this.whoseTurn === "black" ? "white" : "black";
-  }
-  @Mutation
-  SET_INIT_TURN() {
-    this.whoseTurn = "black";
   }
 }
 export const board = getModule(Board);

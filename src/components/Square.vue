@@ -1,14 +1,26 @@
 <template>
-  <div class="square" :class="squareClass" @click="putStone" />
+  <div class="square" :class="squareClass" @click="putStone">
+    <stone :color="SquareFill" v-if="SquareFill !== 'empty'" />
+  </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { OthelloSquare, fillSquare, canPutStone } from "@/Model/othelloModel";
+import {
+  OthelloSquare,
+  fillSquare,
+  canPutStone,
+  TurnOver
+} from "@/Model/othelloModel";
 import { Prop } from "vue-property-decorator";
-import { board } from "../store/module";
+import { board, turn } from "../store/module";
+import StoneVue from "./Stone.vue";
+
 @Component({
-  name: "square"
+  name: "square",
+  components: {
+    stone: StoneVue
+  }
 })
 export default class extends Vue {
   @Prop() col!: number;
@@ -22,32 +34,29 @@ export default class extends Vue {
    * 奇数→白
    */
   get SquareFill(): OthelloSquare {
-    // if (this.boardFill.length === 0) return "empty";
     const panelFill = this.boardFill[this.row][this.col];
     return fillSquare(panelFill);
   }
-  get backgroundColor() {
-    if (this.SquareFill === "empty") return "green";
-    return this.SquareFill;
-  }
+
   get canPutStone(): boolean {
-    // if (this.boardFill.length === 0) return false;
-    return canPutStone(this.boardFill, this.row, this.col, board.whoseTurn);
+    return canPutStone(this.boardFill, this.row, this.col, turn.whoseTurn);
   }
   get squareClass(): string {
     const classes: any = {
-      "can-put": this.canPutStone
+      "can-put": this.canPutStone,
+      "square-empty": true
     };
-    classes[`square-${this.SquareFill}`] = true;
+    // classes[`square-${this.SquareFill}`] = true;
     return classes;
   }
   // 石を置く
   putStone() {
     if (!this.canPutStone) return;
-    const boardFill = [...this.boardFill];
-    boardFill[this.row][this.col] = board.whoseTurn === "black" ? 2 : 1;
+    let boardFill = [...this.boardFill];
+    boardFill[this.row][this.col] = turn.whoseTurn === "black" ? 2 : 1;
+    boardFill = TurnOver(boardFill, this.row, this.col, turn.whoseTurn);
     board.SET_BOARD_FILL(boardFill);
-    board.SET_NEXT_TURN();
+    turn.SET_NEXT_TURN();
   }
 }
 </script>
@@ -56,12 +65,7 @@ export default class extends Vue {
   width: 50px;
   height: 50px;
   border: solid 2px;
-}
-.square-black {
-  background-color: black;
-}
-.square-white {
-  background-color: white;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.25);
 }
 .square-empty {
   background-color: green;
