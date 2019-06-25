@@ -17,7 +17,7 @@ export default class extends Vue {
     return turn.whoseTurn === "black" ? "黒" : "白";
   }
   get canPutAnyWhere(): boolean {
-    if (isGameContinue(board.boardFill)) return false;
+    if (!isGameContinue(board.boardFill)) return false;
     return canPutStoneAnyWhere(board.boardFill, turn.whoseTurn);
   }
   skipTurn() {
