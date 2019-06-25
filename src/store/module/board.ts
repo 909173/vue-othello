@@ -41,7 +41,7 @@ export class Board extends VuexModule {
   }
   get CanPutAnyWhere(): boolean {
     return this.boardFill.some((col, colIndex) =>
-      col.some((line, lineIndex) =>
+      col.some((_, lineIndex) =>
         canPutStone(this.boardFill, lineIndex, colIndex, turn.whoseTurn)
       )
     );

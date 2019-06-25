@@ -34,6 +34,5 @@ export default class extends Vue {
 
 svg {
   transition: all 1s;
-  /* animation: rotateY 1s linear 0s infinite; */
 }
 </style>

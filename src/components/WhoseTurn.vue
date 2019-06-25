@@ -8,6 +8,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { turn, board } from "../store/module";
+import { canPutStoneAnyWhere, isGameContinue } from "../Model/othelloModel";
 @Component({
   name: "whose-turn"
 })
@@ -16,7 +17,8 @@ export default class extends Vue {
     return turn.whoseTurn === "black" ? "黒" : "白";
   }
   get canPutAnyWhere(): boolean {
-    return board.CanPutAnyWhere;
+    if (isGameContinue(board.boardFill)) return false;
+    return canPutStoneAnyWhere(board.boardFill, turn.whoseTurn);
   }
   skipTurn() {
     turn.SET_NEXT_TURN();

@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table style="max-width: 100vw">
     <tr v-for="row in 8" :key="`row ${row}`">
       <td v-for="col in 8" :key="`col ${col} ${row}`">
         <square :col="col - 1" :row="row - 1" />

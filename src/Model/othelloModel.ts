@@ -1,3 +1,5 @@
+import { board } from "@/store/module";
+
 export type OthelloColor = "black" | "white"; // 白黒
 // 升目のあり得る目
 export type OthelloSquare = OthelloColor | "empty"; // 白黒空
@@ -22,12 +24,27 @@ export type TurnOverModel = {
     col: number;
   };
 };
-export const canPutStone = (
+// ゲームが続行できるかどうかを判定する。
+export const isGameContinue = (board: number[][]): boolean =>
+  canPutStoneAnyWhere(board, "black") || canPutStoneAnyWhere(board, "white");
+// どこかにマスが置けるかどうか判定
+export const canPutStoneAnyWhere = (
   board: number[][],
+  whoseTurn: OthelloColor
+): boolean =>
+  board.some((col, colIndex) =>
+    col.some((_, lineIndex) =>
+      canPutStone(board, lineIndex, colIndex, whoseTurn)
+    )
+  );
+// 特定の盤面で入力されたマスに石が置けるかどうかを判定する
+export const canPutStone = (
+  board: number[][], // 盤面
   line: number,
   col: number,
-  whoseTurn: OthelloColor
+  whoseTurn: OthelloColor // どちらのターンか
 ): boolean => {
+  // 空の場所以外は置けない。
   if (!isEmpty(board[line][col])) return false;
   const model: TurnOverModel = {
     board,
